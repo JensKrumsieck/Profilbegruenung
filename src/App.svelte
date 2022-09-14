@@ -114,7 +114,7 @@
   <div class="p-6 flex gap-4">
     <img src="logo.png" alt="logo" class="h-8" />
     <span class="font-bold text-xl text-yellow italic"
-      >Profilbildrahmen Generator</span
+      >Profilbegrünung</span
     >
   </div>
   <div class="bg-green relative w-full h-[35vh] md:h-[50vh]">
