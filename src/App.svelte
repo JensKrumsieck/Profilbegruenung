@@ -172,7 +172,7 @@
     </li>
   </ol>
   <div id="preview" class="w-full flex flex-wrap gap-4 my-4 md:px-6" />
-  <div class="px-6 py-4 mt-4 text-green text-sm bg-orange rounded-tr-xl">Ein Projekt von <a class="hover:text-black font-semibold underline" href="https://jenskrumsieck.de">Jens Krumsieck</a></div>
+  <div class="px-6 py-4 mt-4 text-green text-sm bg-orange rounded-tr-xl">Ein Projekt von <a class="hover:text-black font-semibold underline" href="https://jenskrumsieck.de">Jens Krumsieck</a> (<a class="hover:text-black font-semibold underline" href="https://gruene-braunschweig.de/">KV Braunschweig</a>)</div>
 </div>
 
 <style global lang="postcss">
