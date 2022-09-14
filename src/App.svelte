@@ -117,7 +117,7 @@
       />
     {/if}
   </div>
-  <div class="p-7 flex gap-6">
+  <div class="p-7 flex flex-wrap gap-6">
     <input
       class="text-sm text-white
       file:mr-5 file:py-2 file:px-6
