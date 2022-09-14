@@ -94,7 +94,7 @@
 <div class="flex flex-wrap md:w-1/2 container mx-auto bg-green">
   <div class="p-6 flex gap-4">
     <img src="logo.png" alt="logo" class="h-8" />
-    <span class="font-bold text-xl text-yellow italic">Profil Rahmen Generator</span>
+    <span class="font-bold text-xl text-yellow italic">Profilbildrahmen Generator</span>
   </div>
   <div class="bg-green relative w-full h-[50vh]">
     {#if image}
