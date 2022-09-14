@@ -3,12 +3,11 @@
   export let onChange
 </script>
 
-<label for="toogleA" class="flex items-center cursor-pointer">
+<label class="flex items-center cursor-pointer w-72">
   <!-- toggle -->
   <div class="relative">
     <!-- input -->
     <input
-      id="toogleA"
       type="checkbox"
       class="sr-only"
       bind:checked={isChecked}

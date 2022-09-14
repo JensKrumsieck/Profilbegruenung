@@ -3,41 +3,35 @@
   import { onMount } from "svelte";
   import Toggle from "./lib/components/Toggle.svelte";
 
-  let image, original, frame, px
+  let image, original, px;
+  let frame = new Image();
+  let ltwBadge = new Image();
+  let rect = new Image();
+  let claim = new Image();
   let canvasArray = [];
   let images = [];
   let preview;
   let isFrame = false;
+  let useBadge = false;
+  let useRect = false;
+  let useClaim = true;
+  const folder = "../public"
 
-  const files = [
-    "endlichmachen.png",
-    "endlichmachen2.png",
-    "endlichmachen3.png",
-    "endlichmachen4.png",
-    "endlichmachen5.png",
-    "endlichmachen6.png",
-    "grünwählen.png",
-    "pride.png",
-    "pride2.png",
-    "flower.png",
-    "flower2.png",
-    "logo.png",
-    "gj.png",
-    "femin.png",
-    "femin2.png",
-    "atom.png",
-  ];
-
-  onMount(() => {
+  onMount(async () => {
+    var files = import.meta.glob(`../public/logos/*.svg`);
     //Create canvasses (is that the plural?)
-    files.forEach((f) => {
-      createCanvas();
-      let badge = new Image();
-      badge.src = "frames/" + f;
-      images.push(badge);
-    });
-    frame = new Image();
-    frame.src = "frames/frame.svg";
+    var imgs = await Promise.all(
+      Object.entries(files).map(async ([path]) => {
+        createCanvas();
+        let badge = new Image();
+        badge.src = path.slice(folder.length);
+        images.push(badge);
+      })
+    );
+    frame.src = "items/frame.svg";
+    ltwBadge.src = "items/störer.svg";
+    rect.src = "items/rect.svg";
+    claim.src = "items/claim.svg";
   });
 
   function createCanvas() {
@@ -67,7 +61,8 @@
       //add missing props
       original = new Image();
       original.src = image;
-      previewCrop(original.width, original.height, 0, 0);
+      px = { width: original.width, height: original.height, x: 0, y: 0 };
+      previewCrop();
     };
     fileReader.readAsDataURL(imageFile);
   }
@@ -82,24 +77,40 @@
 
   function onCropComplete(e) {
     px = e.detail.pixels;
-    previewCrop(px.width, px.height, px.x, px.y);
+    previewCrop();
   }
 
-  function previewCrop(width, height, dx, dy) {
-    for (var i = 0; i < files.length; i++) {
+  function previewCrop() {
+    for (var i = 0; i < images.length; i++) {
       var canvas = canvasArray[i];
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = px.width;
+      canvas.height = px.height;
       var ctx = canvas.getContext("2d");
 
-      ctx.drawImage(original, dx, dy, width, height, 0, 0, width, height);
-      if(isFrame) ctx.drawImage(frame, 0, 0, width, height);
-      ctx.drawImage(images[i], 0, 0, width, height);
+      ctx.drawImage(
+        original,
+        px.x,
+        px.y,
+        px.width,
+        px.height,
+        0,
+        0,
+        px.width,
+        px.height
+      );
+      if (isFrame) drawItem(ctx, frame);
+      if (useBadge) drawItem(ctx, ltwBadge);
+      if (useRect) drawItem(ctx, rect);
+      if (useClaim) drawItem(ctx, claim);
+      drawItem(ctx, images[i]);
     }
+  }
+  function drawItem(ctx, item) {
+    ctx.drawImage(item, 0, 0, px.width, px.height);
   }
 </script>
 
-<div class="flex flex-wrap md:w-1/2 container mx-auto bg-green">
+<div class="flex flex-wrap container mx-auto bg-green md:max-w-[75%]">
   <div class="p-6 flex gap-4">
     <img src="logo.png" alt="logo" class="h-8" />
     <span class="font-bold text-xl text-yellow italic"
@@ -117,7 +128,7 @@
       />
     {/if}
   </div>
-  <div class="p-7 flex flex-wrap gap-6">
+  <div class="p-7">
     <input
       class="text-sm text-white
       file:mr-5 file:py-2 file:px-6
@@ -130,9 +141,22 @@
       accept=".jpg, .jpeg, .png"
       on:change={(e) => onFileSelected(e)}
     />
-    <Toggle bind:isChecked={isFrame} onChange={() => previewCrop(px.width, px.height, px.x, px.y)}>Rahmen um das Bild legen</Toggle>
+    <div class="flex flex-wrap gap-6 my-4">
+      <Toggle bind:isChecked={useClaim} onChange={() => previewCrop()}
+        >Claim einblenden</Toggle
+      >
+      <Toggle bind:isChecked={useBadge} onChange={() => previewCrop()}
+        >Wahlhinweis einblenden</Toggle
+      >
+      <Toggle bind:isChecked={useRect} onChange={() => previewCrop()}
+        >Grüner Hintergrund unten</Toggle
+      >
+      <Toggle bind:isChecked={isFrame} onChange={() => previewCrop()}
+        >Rahmen um Bild</Toggle
+      >
+    </div>
   </div>
-  <ol class="list-decimal text-white font-bold m-6 px-7">
+  <ol class="list-decimal text-white font-bold mx-6 px-7">
     <li>
       <strong class="italic my-4"
         >Auf Schaltfläche tippen und Bild auswählen.</strong
@@ -147,7 +171,7 @@
       >
     </li>
   </ol>
-  <div id="preview" class="w-full flex flex-wrap gap-4 my-4" />
+  <div id="preview" class="w-full flex flex-wrap gap-4 my-4 md:px-6" />
 </div>
 
 <style global lang="postcss">
