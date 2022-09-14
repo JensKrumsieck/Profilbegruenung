@@ -3,14 +3,13 @@
   import { onMount } from "svelte";
   import Toggle from "./lib/components/Toggle.svelte";
 
-  let image, original, px;
+  let image, original, px, preview, filename
   let frame = new Image();
   let ltwBadge = new Image();
   let rect = new Image();
   let claim = new Image();
   let canvasArray = [];
   let images = [];
-  let preview;
   let isFrame = false;
   let useBadge = true;
   let useRect = false;
@@ -55,6 +54,7 @@
 
   function onFileSelected(e) {
     let imageFile = e.currentTarget.files[0];
+    filename = imageFile.name.slice(0,-4)
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       image = e.target.result;
@@ -70,7 +70,7 @@
   function downloadfile(e) {
     var canvas = e.srcElement;
     var anchor = document.createElement("a");
-    anchor.download = "grün.png";
+    anchor.download = filename + "_begruent.png";
     anchor.href = canvas.toDataURL();
     anchor.click();
   }
