@@ -12,15 +12,15 @@
   let images = [];
   let preview;
   let isFrame = false;
-  let useBadge = false;
+  let useBadge = true;
   let useRect = false;
   let useClaim = true;
-  const folder = "../public"
+  const folder = "../public";
 
   onMount(async () => {
     var files = import.meta.glob(`../public/logos/*.svg`);
     //Create canvasses (is that the plural?)
-    var imgs = await Promise.all(
+    await Promise.all(
       Object.entries(files).map(async ([path]) => {
         createCanvas();
         let badge = new Image();
@@ -172,6 +172,7 @@
     </li>
   </ol>
   <div id="preview" class="w-full flex flex-wrap gap-4 my-4 md:px-6" />
+  <div class="px-6 py-4 mt-4 text-green text-sm bg-orange rounded-tr-xl">Ein Projekt von <a class="hover:text-black font-semibold underline" href="https://jenskrumsieck.de">Jens Krumsieck</a></div>
 </div>
 
 <style global lang="postcss">
