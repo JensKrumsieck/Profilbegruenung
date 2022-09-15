@@ -19,9 +19,9 @@
 
   onMount(async () => {
     //firefox does not like svg file, chrome does
-    if(navigator.userAgent.includes("chrome")) fileformat = "svg"
+    if(window.chrome) fileformat = "svg"
     var files = import.meta.glob(`../public/logos/*.png`);    
-    if(navigator.userAgent.includes("chrome")) var files = import.meta.glob(`../public/logos/*.svg`);
+    if(window.chrome) var files = import.meta.glob(`../public/logos/*.svg`);
     //Create canvasses (is that the plural?)
     await Promise.all(
       Object.entries(files).map(async ([path]) => {
