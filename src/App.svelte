@@ -17,7 +17,7 @@
   const folder = "../public";
 
   onMount(async () => {
-    var files = import.meta.glob(`../public/logos/*.svg`);
+    var files = import.meta.glob(`../public/logos/*.png`);
     //Create canvasses (is that the plural?)
     await Promise.all(
       Object.entries(files).map(async ([path]) => {
@@ -27,10 +27,10 @@
         images.push(badge);
       })
     );
-    frame.src = "items/frame.svg";
-    ltwBadge.src = "items/störer.svg";
-    rect.src = "items/rect.svg";
-    claim.src = "items/claim.svg";
+    frame.src = "items/frame.png";
+    ltwBadge.src = "items/störer.png";
+    rect.src = "items/rect.png";
+    claim.src = "items/claim.png";
   });
 
   function createCanvas() {
@@ -86,7 +86,7 @@
       canvas.width = px.width;
       canvas.height = px.height;
       var ctx = canvas.getContext("2d");
-
+      ctx.clearRect(0,0,px.width, px.height)
       ctx.drawImage(
         original,
         px.x,
