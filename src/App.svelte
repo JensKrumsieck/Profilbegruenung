@@ -15,9 +15,13 @@
   let useRect = false;
   let useClaim = true;
   const folder = "../public";
+  let fileformat = "png"
 
   onMount(async () => {
-    var files = import.meta.glob(`../public/logos/*.png`);
+    //firefox does not like svg file, chrome does
+    if(navigator.userAgent.includes("chrome")) fileformat = "svg"
+    var files = import.meta.glob(`../public/logos/*.png`);    
+    if(navigator.userAgent.includes("chrome")) var files = import.meta.glob(`../public/logos/*.svg`);
     //Create canvasses (is that the plural?)
     await Promise.all(
       Object.entries(files).map(async ([path]) => {
@@ -27,10 +31,10 @@
         images.push(badge);
       })
     );
-    frame.src = "items/frame.png";
-    ltwBadge.src = "items/störer.png";
-    rect.src = "items/rect.png";
-    claim.src = "items/claim.png";
+    frame.src = `items/frame.${fileformat}`;
+    ltwBadge.src = `items/störer.${fileformat}`;
+    rect.src = `items/rect.${fileformat}`;
+    claim.src = `items/claim.${fileformat}`;
   });
 
   function createCanvas() {
@@ -86,7 +90,6 @@
       canvas.width = px.width;
       canvas.height = px.height;
       var ctx = canvas.getContext("2d");
-      ctx.clearRect(0,0,px.width, px.height)
       ctx.drawImage(
         original,
         px.x,
