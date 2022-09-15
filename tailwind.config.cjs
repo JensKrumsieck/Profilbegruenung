@@ -6,9 +6,9 @@ module.exports = {
       transparent: 'transparent',
       white: '#ffffff',
       black: '#000000',
-      green: '#005A50',
-      orange: '#F6992E',
-      yellow: '#FEE000'
+      green: '#00594e',
+      orange: '#F1912e',
+      yellow: '#FFe100'
     },
     extend: {},
   },
