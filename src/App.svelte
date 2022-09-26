@@ -3,25 +3,27 @@
   import { onMount } from "svelte";
   import Toggle from "./lib/components/Toggle.svelte";
 
-  let image, original, px, preview, filename
+  let image, original, px, preview, filename;
   let frame = new Image();
   let ltwBadge = new Image();
+  let ltwAlt = new Image();
   let rect = new Image();
   let claim = new Image();
   let canvasArray = [];
   let images = [];
-  let isFrame = false;
+  let useFrame = false;
   let useBadge = true;
   let useRect = false;
   let useClaim = true;
+  let useAltBadge = false;
   const folder = "../public";
-  let fileformat = "png"
+  let fileformat = "png";
 
   onMount(async () => {
     //firefox does not like svg file, chrome does
-    if(window.chrome) fileformat = "svg"
-    var files = import.meta.glob(`../public/logos/*.png`);    
-    if(window.chrome) var files = import.meta.glob(`../public/logos/*.svg`);
+    if (window.chrome) fileformat = "svg";
+    var files = import.meta.glob(`../public/logos/*.png`);
+    if (window.chrome) var files = import.meta.glob(`../public/logos/*.svg`);
     //Create canvasses (is that the plural?)
     await Promise.all(
       Object.entries(files).map(async ([path]) => {
@@ -35,6 +37,7 @@
     ltwBadge.src = `items/störer.${fileformat}`;
     rect.src = `items/rect.${fileformat}`;
     claim.src = `items/claim.${fileformat}`;
+    ltwAlt.src = `items/vote.${fileformat}`;
   });
 
   function createCanvas() {
@@ -58,7 +61,7 @@
 
   function onFileSelected(e) {
     let imageFile = e.currentTarget.files[0];
-    filename = imageFile.name.slice(0,-4)
+    filename = imageFile.name.slice(0, -4);
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       image = e.target.result;
@@ -101,24 +104,26 @@
         px.width,
         px.height
       );
-      if (isFrame) drawItem(ctx, frame);
+      if (useFrame) drawItem(ctx, frame);
       if (useBadge) drawItem(ctx, ltwBadge);
       if (useRect) drawItem(ctx, rect);
       if (useClaim) drawItem(ctx, claim);
-      drawItem(ctx, images[i]);
+      if (useAltBadge) drawItem(ctx, ltwAlt);
+      drawItem(ctx, images[i], useAltBadge);
     }
   }
-  function drawItem(ctx, item) {
-    ctx.drawImage(item, 0, 0, px.width, px.height);
+  function drawItem(ctx, item, offset = false) {
+    if(!offset)    
+      ctx.drawImage(item, 0, 0, px.width, px.height);
+    else    
+      ctx.drawImage(item, -px.width/10.5, -px.height/2.5, px.width * 1.25, px.height * 1.25);
   }
 </script>
 
 <div class="flex flex-wrap container mx-auto bg-green md:max-w-[75%]">
   <div class="p-6 flex gap-4">
     <img src="logo.png" alt="logo" class="h-8" />
-    <span class="font-bold text-xl text-yellow italic"
-      >Profilbegrünung</span
-    >
+    <span class="font-bold text-xl text-yellow italic">Profilbegrünung</span>
   </div>
   <div class="bg-green relative w-full h-[35vh] md:h-[50vh]">
     {#if image}
@@ -148,13 +153,26 @@
       <Toggle bind:isChecked={useClaim} onChange={() => previewCrop()}
         >Claim einblenden</Toggle
       >
-      <Toggle bind:isChecked={useBadge} onChange={() => previewCrop()}
-        >Wahlhinweis einblenden</Toggle
+      <Toggle
+        bind:isChecked={useBadge}
+        onChange={() => {
+          useAltBadge = false;
+          previewCrop();
+        }}>Wahlhinweis einblenden</Toggle
+      >
+      <Toggle
+        bind:isChecked={useAltBadge}
+        onChange={() => {
+          useBadge = false;
+          useClaim = false;
+          useFrame = true;
+          previewCrop();
+        }}>Wahlhinweis einblenden (Andere Darstellung)</Toggle
       >
       <Toggle bind:isChecked={useRect} onChange={() => previewCrop()}
         >Grüner Hintergrund unten</Toggle
       >
-      <Toggle bind:isChecked={isFrame} onChange={() => previewCrop()}
+      <Toggle bind:isChecked={useFrame} onChange={() => previewCrop()}
         >Rahmen um Bild</Toggle
       >
     </div>
@@ -175,7 +193,16 @@
     </li>
   </ol>
   <div id="preview" class="w-full flex flex-wrap gap-4 my-4 md:px-6" />
-  <div class="px-6 py-4 mt-4 text-green text-sm bg-orange rounded-tr-xl">Ein Projekt von <a class="hover:text-black font-semibold underline" href="https://jenskrumsieck.de">Jens Krumsieck</a> (<a class="hover:text-black font-semibold underline" href="https://gruene-braunschweig.de/">KV Braunschweig</a>)</div>
+  <div class="px-6 py-4 mt-4 text-green text-sm bg-orange rounded-tr-xl">
+    Ein Projekt von <a
+      class="hover:text-black font-semibold underline"
+      href="https://jenskrumsieck.de">Jens Krumsieck</a
+    >
+    (<a
+      class="hover:text-black font-semibold underline"
+      href="https://gruene-braunschweig.de/">KV Braunschweig</a
+    >)
+  </div>
 </div>
 
 <style global lang="postcss">
