@@ -160,6 +160,12 @@
           previewCrop();
         }}>Wahlhinweis einblenden</Toggle
       >
+      <Toggle bind:isChecked={useRect} onChange={() => previewCrop()}
+        >Grüner Hintergrund unten</Toggle
+      >
+      <Toggle bind:isChecked={useFrame} onChange={() => previewCrop()}
+        >Rahmen um Bild</Toggle
+      >      
       <Toggle
         bind:isChecked={useAltBadge}
         onChange={() => {
@@ -168,12 +174,6 @@
           useFrame = true;
           previewCrop();
         }}>Wahlhinweis einblenden (Andere Darstellung)</Toggle
-      >
-      <Toggle bind:isChecked={useRect} onChange={() => previewCrop()}
-        >Grüner Hintergrund unten</Toggle
-      >
-      <Toggle bind:isChecked={useFrame} onChange={() => previewCrop()}
-        >Rahmen um Bild</Toggle
       >
     </div>
   </div>
