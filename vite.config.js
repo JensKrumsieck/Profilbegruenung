@@ -9,7 +9,7 @@ export default defineConfig({
     registerType: 'autoUpdate',
     injectRegister: 'inline',
     workbox: {
-      globPatterns: ['**/*.{js,css,html,ico,svg,png}']
+      globPatterns: ['**/*.{js,css,html,ico,svg,png,webp}']
     },
     includeAssets: ['logo.png', 'mask.svg'],
     manifest:{

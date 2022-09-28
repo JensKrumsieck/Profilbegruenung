@@ -122,7 +122,7 @@
 
 <div class="flex flex-wrap container mx-auto bg-green md:max-w-[75%]">
   <div class="p-6 flex gap-4">
-    <img src="logo.png" alt="logo" class="h-8" />
+    <img class="h-8 w-8" srcset="logo-192.webp, logo-192.png" alt="logo" width="64px" height="64px" />
     <span class="font-bold text-xl text-yellow italic">Profilbegrünung</span>
   </div>
   <div class="bg-green relative w-full h-[35vh] md:h-[50vh]">
