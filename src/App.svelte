@@ -33,7 +33,7 @@
       })
     );
     frame.src = `items/frame.${fileformat}`;
-    ltwBadge.src = `items/störer.${fileformat}`;
+    ltwBadge.src = `items/stoerer.${fileformat}`;
     rect.src = `items/rect.${fileformat}`;
     claim.src = `items/claim.${fileformat}`;
     ltwAlt.src = `items/vote.${fileformat}`;
